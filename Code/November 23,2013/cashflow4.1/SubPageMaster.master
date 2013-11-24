@@ -1,0 +1,16 @@
+﻿<%@ Master Language="VB" MasterPageFile="~/HeaderPageMaster.master" AutoEventWireup="False" CodeFile="SubPageMaster.master.vb" Inherits="SubPageMaster" %>
+
+<asp:Content ID="SubContent" ContentPlaceHolderID="MenuContentPlaceHolder" Runat="Server">
+       <div class="subHeader">
+        Cash Flow Web v4.1<%--&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        |  <a href="">Create New Memo</a> |
+        <a href="">Memorandum</a> |
+        <a href="">Log</a> --%>
+       </div>
+<div>
+      <asp:ContentPlaceHolder id="SubContentPlaceHolder" runat="server">
+        
+      </asp:ContentPlaceHolder>
+</div>
+</asp:Content>
+

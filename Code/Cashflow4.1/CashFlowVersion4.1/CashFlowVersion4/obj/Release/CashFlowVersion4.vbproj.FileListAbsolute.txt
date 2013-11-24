@@ -1,0 +1,6 @@
+C:\Users\MISBOS\Desktop\cfv4App\CashFlowVersion3\CashFlowVersion4\obj\Release\ResolveAssemblyReference.cache
+C:\Users\MISBOS\Desktop\cfv4App\CashFlowVersion3\CashFlowVersion4\obj\Release\CashFlowVersion4.Form1.resources
+C:\Users\MISBOS\Desktop\cfv4App\CashFlowVersion3\CashFlowVersion4\obj\Release\CashFlowVersion4.GenerateReport.resources
+C:\Users\MISBOS\Desktop\cfv4App\CashFlowVersion3\CashFlowVersion4\obj\Release\CashFlowVersion4.Resources.resources
+C:\Users\MISBOS\Desktop\cfv4App\CashFlowVersion3\CashFlowVersion4\obj\Release\CashFlowVersion4.vbproj.GenerateResource.Cache
+C:\Users\MISBOS\Desktop\cfv4App\CashFlowVersion3\CashFlowVersion4\obj\Release\CashFlowVersion4.exe

@@ -1,0 +1,58 @@
+﻿<%@ Master Language="VB" MasterPageFile="~/SubPageMaster.master" AutoEventWireup="False" CodeFile="LeftPageMaster.master.vb" Inherits="LeftPageMaster" %>
+
+<asp:Content ID="LeftContent" ContentPlaceHolderID="SubContentPlaceHolder" Runat="Server">
+    <!-- ##### Side Bar ##### -->
+    <div id="side-bar">
+        <p class="sideBarTitle">
+        &nbsp;
+        &nbsp;
+            &nbsp;<asp:Label ID="lblDept" runat="server"></asp:Label>
+          </p>
+        <p class="sideBarTitle">
+        &nbsp;
+        &nbsp;
+            &nbsp;<asp:Label ID="lblCostCenter" runat="server"></asp:Label>
+          </p>
+        <p class="sideBarTitle">
+        &nbsp;
+        &nbsp;
+            &nbsp;<asp:Label ID="lblDate" runat="server"></asp:Label>
+          </p>
+        <p class="sideBarTitle">
+        &nbsp;
+        &nbsp;
+            &nbsp;<asp:Label ID="lblTime" runat="server"></asp:Label>
+          </p>
+        <p class="sideBarTitle">
+        &nbsp;
+        &nbsp;
+            &nbsp;<asp:Label ID="lblDeptName" runat="server"></asp:Label>
+          </p>
+        <br />
+      <div>
+      <p class="sideBarTitle"></p> 
+      <p class="sideBarTitle"></p> 
+      <p class="sideBarTitle"></p> 
+      <p class="sideBarTitle"></p>       
+      <p class="sideBarTitle"></p> 
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      </div>
+    </div>
+    <div>
+        <asp:ContentPlaceHolder id="LeftContentPlaceHolder" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+</asp:Content>
+

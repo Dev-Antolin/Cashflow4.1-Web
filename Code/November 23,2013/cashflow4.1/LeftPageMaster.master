@@ -1,0 +1,68 @@
+﻿<%@ Master Language="VB" MasterPageFile="~/SubPageMaster.master" AutoEventWireup="False" CodeFile="LeftPageMaster.master.vb" Inherits="LeftPageMaster" %>
+
+<asp:Content ID="LeftContent" ContentPlaceHolderID="SubContentPlaceHolder" Runat="Server">
+    <!-- ##### Side Bar ##### -->
+    <div id="side-bar">
+        <p class="sideBarTitle">
+        &nbsp;
+            
+            <asp:Image ID="Image1" runat="server"
+                ImageUrl="~/Images/job.gif" Width="20" Height="20" 
+                ImageAlign="Middle" />
+            &nbsp;<asp:Label ID="lblDept" runat="server" Font-Bold="False"></asp:Label>
+          </p>
+        <p class="sideBarTitle">
+        &nbsp;
+            <asp:Image ID="Image2" runat="server" 
+                ImageUrl="~/Images/CostCenter1.png" Width="20" Height="20" 
+                ImageAlign="Middle" /> 
+            &nbsp;<asp:Label ID="lblCostCenter" runat="server" Font-Bold="False"></asp:Label>
+          </p>
+        <p class="sideBarTitle">
+        &nbsp;
+            <asp:Image ID="Image5" runat="server"
+                ImageUrl="~/Images/Calendar.png" Width="20" Height="20" 
+                ImageAlign="Middle" /> 
+            &nbsp;<asp:Label ID="lblDate" runat="server" Font-Bold="False"></asp:Label>
+          </p>
+        <p class="sideBarTitle">
+        &nbsp;
+              <asp:Image ID="Image4" runat="server"
+                ImageUrl="~/Images/Clock.png" Width="20" Height="20" ImageAlign="Middle" /> 
+            &nbsp;<asp:Label ID="lblTime" runat="server" Font-Bold="False"></asp:Label>
+          </p>
+        <p class="sideBarTitle">
+        &nbsp;
+             <asp:Image ID="Image3" runat="server"
+                ImageUrl="~/Images/home.png" Width="20" Height="20" 
+                ImageAlign="Middle" /> 
+            &nbsp;<asp:Label ID="lblDeptName" runat="server" Font-Bold="False"></asp:Label>
+          </p>
+        <br />
+      <div>
+      <p class="sideBarTitle"></p> 
+      <p class="sideBarTitle"></p> 
+      <p class="sideBarTitle"></p> 
+      <p class="sideBarTitle"></p>       
+      <p class="sideBarTitle"></p> 
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      <p class="sideBarTitle"></p>
+      </div>
+    </div>
+    <div>
+        <asp:ContentPlaceHolder id="LeftContentPlaceHolder" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+</asp:Content>
+

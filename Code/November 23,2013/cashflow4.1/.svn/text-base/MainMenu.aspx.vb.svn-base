@@ -1,0 +1,712 @@
+﻿Imports System
+Imports System.IO
+Imports ini_DLL
+Imports DB_DLL
+Imports System.Web.UI
+Imports System.Data
+Imports CrystalDecisions.Shared
+Imports CrystalDecisions.CrystalReports.Engine
+Imports System.Web.Configuration
+Imports System.Data.SqlClient
+Imports AjaxControlToolkit
+
+Partial Class MainMenu
+    Inherits System.Web.UI.Page
+    Public WithEvents orpt1 As ReportDocument
+    Dim reportR, wideR, regionR, areaR, branchR As String
+    Dim VRAB As String
+    Dim gen_date As DateTime
+    Dim date_flag As Boolean
+
+    Private Sub IniSetup()
+        Dim ini_Path As String = AppDomain.CurrentDomain.BaseDirectory + "cashflowv3.ini"
+        Dim line As String = Nothing
+
+        Dim serverRVisMin, dbRVisMin, unameRVisMin, passRVisMin As String
+        Dim serverRLuzon, dbRLuzon, unameRLuzon, passRLuzon As String
+        Dim rdr As New ReadWriteINI
+        Dim strConfRVisMin, strConfRLuzon As String
+
+        serverRVismin = rdr.readINI("SERVER VisMin INI", "SERVER", False, ini_Path)
+        dbRVismin = rdr.readINI("SERVER VisMin INI", "DBNAME", False, ini_Path)
+        unameRVismin = rdr.readINI("SERVER VisMin INI", "USERNAME", False, ini_Path)
+        passRVismin = rdr.readINI("SERVER VisMin INI", "PASSWORD", False, ini_Path)
+        strConfRVismin = "user id=" & unameRVismin & ";password=" & passRVismin & ";data source=" & serverRVismin & ";persist security info=False;initial catalog=" & dbRVismin
+        Me.Session.Add("strConfRVismin", strConfRVismin)
+
+        serverRLuzon = rdr.readINI("SERVER Luzon INI", "SERVER", False, ini_Path)
+        dbRLuzon = rdr.readINI("SERVER Luzon INI", "DBNAME", False, ini_Path)
+        unameRLuzon = rdr.readINI("SERVER Luzon INI", "USERNAME", False, ini_Path)
+        passRLuzon = rdr.readINI("SERVER Luzon INI", "PASSWORD", False, ini_Path)
+        strConfRLuzon = "user id=" & unameRLuzon & ";password=" & passRLuzon & ";data source=" & serverRLuzon & ";persist security info=False;initial catalog=" & dbRLuzon
+        Me.Session.Add("strConfRLuzon", strConfRLuzon)
+
+
+    End Sub
+
+    Private Sub IniReport()
+        Dim ini_Path As String = AppDomain.CurrentDomain.BaseDirectory + "cashflowv3report.ini"
+        Dim line As String = Nothing
+
+        Dim server, db, uname, pass As String
+        Dim rdr As New ReadWriteINI
+        Dim strConfReport As String
+
+        server = rdr.readINI("SERVER INI", "SERVER", False, ini_Path)
+        db = rdr.readINI("SERVER INI", "DBNAME", False, ini_Path)
+        uname = rdr.readINI("SERVER INI", "USERNAME", False, ini_Path)
+        pass = rdr.readINI("SERVER INI", "PASSWORD", False, ini_Path)
+        strConfReport = "user id=" & uname & ";password=" & pass & ";data source=" & server & ";persist security info=False;initial catalog=" & db
+        Me.Session.Add("strConfReport", strConfReport)
+    End Sub
+
+    Protected Sub dplRegion_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dplRegion.SelectedIndexChanged
+        dplArea.Items.Clear()
+        dplBranch.Items.Clear()
+        area()
+        'dplArea.Enabled = True
+    End Sub
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        CheckLogin()
+        Call IniSetup()
+
+        If Not IsPostBack Then
+            If date_flag = Me.Session("date_flag") Then
+                wide()
+                dplRegion.Enabled = False
+                dplArea.Enabled = False
+                dplBranch.Enabled = False
+                txtStartDate.Text = Date.Today
+            Else
+                wide()
+                dplRegion.Enabled = False
+                dplArea.Enabled = False
+                dplBranch.Enabled = False
+                txtStartDate.Text = Me.Session("dt")
+                'dplWide.SelectedValue = " "
+            End If
+            'wide()
+            'dplRegion.Enabled = False
+            'dplArea.Enabled = False
+            'dplBranch.Enabled = False
+            'txtStartDate.Text = " "
+        End If
+    End Sub
+
+    Public Sub area()
+        Dim item As String = Nothing
+        Dim rdr As SqlClient.SqlDataReader = Nothing
+
+        If dplWide.Text = "VISMIN" And dplRegion.SelectedValue <> "" Then
+            Dim strCon As String = Me.Session("strConfRVismin")
+            'Dim dr As SqlClient.SqlDataReader = Nothing
+            Dim db As New clsDBConnection
+            Dim sql As String
+            'Dim area As String
+
+            sql = "select distinct class_04 from bedryf where class_03 = '" + dplRegion.SelectedValue + "'"
+
+            If db.isConnected Then
+                db.CloseConnection()
+            End If
+
+            db.ConnectDB(strCon)
+            rdr = db.Execute_SQL_DataReader(sql)
+
+            dplArea.Enabled = True
+            dplArea.Items.Clear()
+            dplBranch.Items.Clear()
+            dplArea.Items.Add(" ")
+            While rdr.Read
+                item = Trim(rdr(0))
+                dplArea.Items.Add(item.ToUpper)
+            End While
+
+            rdr.Close()
+            db.CloseConnection()
+
+        ElseIf dplWide.Text = "LUZON" And dplRegion.SelectedValue <> "" Then
+            Dim strCon As String = Me.Session("strConfRLuzon")
+            'Dim dr As SqlClient.SqlDataReader = Nothing
+            Dim db As New clsDBConnection
+            Dim sql As String
+            'Dim area As String
+
+            sql = "select distinct class_04 from bedryf where class_03 = '" + dplRegion.SelectedValue + "'"
+
+            If db.isConnected Then
+                db.CloseConnection()
+            End If
+
+            db.ConnectDB(strCon)
+            rdr = db.Execute_SQL_DataReader(sql)
+
+            dplArea.Enabled = True
+            dplArea.Items.Clear()
+            dplBranch.Items.Clear()
+            dplArea.Items.Add(" ")
+            While rdr.Read
+                item = Trim(rdr(0))
+                dplArea.Items.Add(item.ToUpper)
+            End While
+
+            rdr.Close()
+            db.CloseConnection()
+        End If
+    End Sub
+
+    Public Sub region()
+        Dim item As String = Nothing
+        Dim rdr As SqlClient.SqlDataReader = Nothing
+
+        If dplWide.Text = "VISMIN" Then
+            Dim strCon As String = Me.Session("strConfRVismin")
+            'Dim dr As SqlClient.SqlDataReader = Nothing
+            Dim db As New clsDBConnection
+            Dim sql As String
+
+            dplRegion.Enabled = True
+            dplRegion.Items.Clear()
+            dplArea.Items.Clear()
+            dplBranch.Items.Clear()
+            dplRegion.Items.Add(" ")
+            sql = "select distinct class_03 from bedryf"
+
+            If db.isConnected Then
+                db.CloseConnection()
+            End If
+
+            db.ConnectDB(strCon)
+            rdr = db.Execute_SQL_DataReader(sql)
+
+            If rdr.HasRows Then
+                While rdr.Read
+                    item = Trim(rdr(0))
+                    dplRegion.Items.Add(item.ToUpper)
+                End While
+            End If
+
+
+            rdr.Close()
+            db.CloseConnection()
+
+        ElseIf dplWide.Text = "LUZON" Then
+            Dim strCon As String = Me.Session("strConfRLuzon")
+            'Dim dr As SqlClient.SqlDataReader = Nothing
+            Dim db As New clsDBConnection
+            Dim sql As String
+
+            dplRegion.Enabled = True
+            dplRegion.Items.Clear()
+            dplArea.Items.Clear()
+            dplBranch.Items.Clear()
+            dplRegion.Items.Add(" ")
+            sql = "select distinct class_03 from bedryf"
+
+            If db.isConnected Then
+                db.CloseConnection()
+            End If
+
+            db.ConnectDB(strCon)
+            rdr = db.Execute_SQL_DataReader(sql)
+
+            If rdr.HasRows Then
+                While rdr.Read
+                    item = Trim(rdr(0))
+                    dplRegion.Items.Add(item.ToUpper)
+                End While
+            End If
+
+            rdr.Close()
+            db.CloseConnection()
+
+        ElseIf dplWide.SelectedValue = " " Then
+            dplRegion.Enabled = False
+            dplArea.Enabled = False
+            dplBranch.Enabled = False
+        End If
+    End Sub
+
+    Public Sub wide()
+        dplWide.Items.Add(" ")
+        dplWide.Items.Add("VISMIN")
+        dplWide.Items.Add("LUZON")
+    End Sub
+
+    Protected Sub dplArea_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dplArea.SelectedIndexChanged
+        dplBranch.Items.Clear()
+        branch()
+        'dplBranch.Enabled = True
+    End Sub
+
+    Public Sub branch()
+        Dim item As String = Nothing
+        Dim rdr As SqlClient.SqlDataReader = Nothing
+
+        If dplWide.Text = "VISMIN" And dplArea.SelectedValue <> "" Then
+            Dim strCon As String = Me.Session("strConfRVismin")
+            'Dim dr As SqlClient.SqlDataReader = Nothing
+            Dim db As New clsDBConnection
+            Dim sql As String
+            'Dim area As String
+
+            sql = "select distinct bedrnm from bedryf where class_04 = '" + dplArea.SelectedValue + "'"
+
+            If db.isConnected Then
+                db.CloseConnection()
+            End If
+
+            db.ConnectDB(strCon)
+            rdr = db.Execute_SQL_DataReader(sql)
+
+            dplBranch.Enabled = True
+            dplBranch.Items.Clear()
+            dplBranch.Items.Add(" ")
+
+            While rdr.Read
+                item = Trim(rdr(0))
+                dplBranch.Items.Add(item.ToUpper)
+            End While
+
+            rdr.Close()
+            db.CloseConnection()
+
+        ElseIf dplWide.Text = "LUZON" And dplArea.SelectedValue <> "" Then
+            Dim strCon As String = Me.Session("strConfRLuzon")
+            'Dim dr As SqlClient.SqlDataReader = Nothing
+            Dim db As New clsDBConnection
+            Dim sql As String
+            'Dim area As String
+
+            sql = "select distinct bedrnm from bedryf where class_04 = '" + dplArea.SelectedValue + "'"
+
+            If db.isConnected Then
+                db.CloseConnection()
+            End If
+
+            db.ConnectDB(strCon)
+            rdr = db.Execute_SQL_DataReader(sql)
+
+            dplBranch.Enabled = True
+            dplBranch.Items.Clear()
+            dplBranch.Items.Add(" ")
+
+            While rdr.Read
+                item = Trim(rdr(0))
+                dplBranch.Items.Add(item.ToUpper)
+            End While
+
+            rdr.Close()
+            db.CloseConnection()
+
+        End If
+    End Sub
+
+    Protected Sub btnGenerate_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnGenerate.Click
+        If Me.IsPostBack Then
+            gen_date = txtStartDate.Text
+            If dplWide.SelectedValue <> " " And dplRegion.SelectedIndex <= 0 And dplArea.SelectedIndex <= 0 And dplBranch.SelectedIndex <= 0 Then
+                date_flag = False
+                wideR = dplWide.Text
+                regionR = "0"
+                areaR = "0"
+                branchR = "0"
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Me.Session.Add("gen_date", gen_date)
+                Me.Session.Add("date_flag", date_flag)
+                genwide()
+
+            ElseIf dplWide.SelectedValue <> " " And dplRegion.SelectedIndex > 0 And dplArea.SelectedIndex <= 0 And dplBranch.SelectedIndex <= 0 Then
+                date_flag = False
+                wideR = dplWide.Text
+                regionR = dplRegion.Text
+                areaR = "0"
+                branchR = "0"
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Me.Session.Add("gen_date", gen_date)
+                Me.Session.Add("date_flag", date_flag)
+                genRegion()
+
+            ElseIf dplWide.SelectedValue <> " " And dplRegion.SelectedIndex > 0 And dplArea.SelectedIndex > 0 And dplBranch.SelectedIndex <= 0 Then
+                date_flag = False
+                wideR = dplWide.Text
+                areaR = dplArea.Text
+                regionR = "0"
+                branchR = "0"
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Me.Session.Add("gen_date", gen_date)
+                Me.Session.Add("date_flag", date_flag)
+                genArea()
+
+            ElseIf dplWide.SelectedValue <> " " And dplRegion.SelectedIndex > 0 And dplArea.SelectedIndex > 0 And dplBranch.SelectedIndex > 0 Then
+                date_flag = False
+                branchR = dplBranch.Text
+                areaR = "0"
+                wideR = dplWide.Text
+                regionR = "0"
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Me.Session.Add("gen_dateR", gen_date)
+                Me.Session.Add("date_flag", date_flag)
+                genbranch()
+
+            ElseIf dplWide.Text = " " And txtStartDate.Text <> " " Then
+                date_flag = True
+                Dim dt As String = txtStartDate.Text
+                'Dim ho As String = dplWide.Text
+                Me.Session.Add("dt", dt)
+                Me.Session.Add("date_flag", date_flag)
+                'Me.Session.Add("ho", ho)
+                Response.Write("<script language=javascript>")
+                Response.Write("alert('" & "Choose H.O.!" & "')")
+                Response.Write("</script>")
+                Response.Write("<script language=javascript>")
+                Response.Write("window.location = 'MainMenu.aspx'")
+                Response.Write("</script>")
+            End If
+        End If
+    End Sub
+
+    Public Sub genwide()
+        Dim strConR As String = Nothing
+        Dim rdr As SqlClient.SqlDataReader = Nothing
+        Dim dbr As New clsDBConnection
+        Dim sql As String = Nothing
+        Dim t_date As String = Convert.ToString(gen_date)
+        Dim t2_date As String = t_date.Substring(0, t_date.Length - 12)
+
+        If dplWide.Text = "VISMIN" Then
+            reportR = "CF_Vismin_Wide"
+
+            sql = "exec SP_CashFlowVer3Report" & " " & "'" + t2_date + "'" & "," & "'" + wideR + "'" & "," & "'" + regionR + "'" & "," & "'" + areaR + "'" & "," & "'" + branchR + "'" & "," & "'" + reportR + "'"
+
+            If dbr.isConnected Then
+                dbr.CloseConnection()
+            End If
+
+            IniReport()
+            strConR = Me.Session("strConfReport")
+            dbr.ConnectDB(strConR)
+            rdr = dbr.Execute_SQL_DataReader(sql)
+
+            If rdr.Read Then
+                Me.Session.Add("gen_date", gen_date)
+                Me.Session.Add("reportR", reportR)
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Response.Redirect("CashFlowReport.aspx")
+            Else
+                Response.Write("<script language=javascript>")
+                Response.Write("alert('" & "No data to view." & "')")
+                Response.Write("</script>")
+                Response.Write("<script language=javascript>")
+                Response.Write("window.location = 'MainMenu.aspx'")
+                Response.Write("</script>")
+            End If
+
+            rdr.Close()
+            dbr.CloseConnection()
+
+        ElseIf dplWide.Text = "LUZON" Then
+
+            reportR = "CF_Luzon_Wide"
+            sql = "exec SP_CashFlowVer3Report" & " " & "'" + t2_date + "'" & "," & "'" + wideR + "'" & "," & "'" + regionR + "'" & "," & "'" + areaR + "'" & "," & "'" + branchR + "'" & "," & "'" + reportR + "'"
+
+            If dbr.isConnected Then
+                dbr.CloseConnection()
+            End If
+
+            IniReport()
+            strConR = Me.Session("strConfReport")
+            dbr.ConnectDB(strConR)
+            rdr = dbr.Execute_SQL_DataReader(sql)
+
+            If rdr.Read Then
+                Me.Session.Add("gen_date", gen_date)
+                Me.Session.Add("reportR", reportR)
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Response.Redirect("CashFlowReport.aspx")
+            Else
+                Response.Write("<script language=javascript>")
+                Response.Write("alert('" & "No data to view." & "')")
+                Response.Write("</script>")
+                Response.Write("<script language=javascript>")
+                Response.Write("window.location = 'MainMenu.aspx'")
+                Response.Write("</script>")
+            End If
+
+            rdr.Close()
+            dbr.CloseConnection()
+        End If
+    End Sub
+
+    Public Sub genRegion()
+        Dim strConR As String = Nothing
+        Dim rdr As SqlClient.SqlDataReader = Nothing
+        Dim dbr As New clsDBConnection
+        Dim sql As String = Nothing
+        Dim t_date As String = Convert.ToString(gen_date)
+        Dim t2_date As String = t_date.Substring(0, t_date.Length - 12)
+        Dim wRegion As String = Me.Session("regionR")
+
+        If dplWide.Text = "VISMIN" Then
+            reportR = "CF_Region_Vismin"
+
+            sql = "exec SP_CashFlowVer3Report" & " " & "'" + t2_date + "'" & "," & "'" + wideR + "'" & "," & "'" + regionR + "'" & "," & "'" + areaR + "'" & "," & "'" + branchR + "'" & "," & "'" + reportR + "'"
+
+            If dbr.isConnected Then
+                dbr.CloseConnection()
+            End If
+
+            IniReport()
+            strConR = Me.Session("strConfReport")
+            dbr.ConnectDB(strConR)
+            rdr = dbr.Execute_SQL_DataReader(sql)
+
+            If rdr.Read Then
+                Me.Session.Add("gen_date", gen_date)
+                Me.Session.Add("reportR", reportR)
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Response.Redirect("CashFlowReport.aspx")
+            Else
+                Response.Write("<script language=javascript>")
+                Response.Write("alert('" & "No data to view." & "')")
+                Response.Write("</script>")
+                Response.Write("<script language=javascript>")
+                Response.Write("window.location = 'MainMenu.aspx'")
+                Response.Write("</script>")
+            End If
+
+            rdr.Close()
+            dbr.CloseConnection()
+
+        ElseIf dplWide.Text = "LUZON" Then
+            reportR = "CF_Region_Luzon"
+
+            sql = "exec SP_CashFlowVer3Report" & " " & "'" + t2_date + "'" & "," & "'" + wideR + "'" & "," & "'" + regionR + "'" & "," & "'" + areaR + "'" & "," & "'" + branchR + "'" & "," & "'" + reportR + "'"
+
+            If dbr.isConnected Then
+                dbr.CloseConnection()
+            End If
+
+            IniReport()
+            strConR = Me.Session("strConfReport")
+            dbr.ConnectDB(strConR)
+            rdr = dbr.Execute_SQL_DataReader(sql)
+
+            If rdr.Read Then
+                Me.Session.Add("gen_date", gen_date)
+                Me.Session.Add("reportR", reportR)
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Response.Redirect("CashFlowReport.aspx")
+            Else
+                Response.Write("<script language=javascript>")
+                Response.Write("alert('" & "No data to view." & "')")
+                Response.Write("</script>")
+                Response.Write("<script language=javascript>")
+                Response.Write("window.location = 'MainMenu.aspx'")
+                Response.Write("</script>")
+            End If
+
+            rdr.Close()
+            dbr.CloseConnection()
+
+        End If
+    End Sub
+
+    Protected Sub dplWide_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dplWide.SelectedIndexChanged
+        dplRegion.Items.Clear()
+        dplArea.Items.Clear()
+        dplBranch.Items.Clear()
+        region()
+    End Sub
+
+    Public Sub genArea()
+        Dim strConR As String = Nothing
+        Dim rdr As SqlClient.SqlDataReader = Nothing
+        Dim dbr As New clsDBConnection
+        Dim sql As String = Nothing
+        Dim t_date As String = Convert.ToString(gen_date)
+        Dim t2_date As String = t_date.Substring(0, t_date.Length - 12)
+        Dim wArea As String = Me.Session("areaR")
+
+        If dplWide.Text = "VISMIN" Then
+            reportR = "CF_Area_Vismin"
+
+            sql = "exec SP_CashFlowVer3Report" & " " & "'" + t2_date + "'" & "," & "'" + wideR + "'" & "," & "'" + regionR + "'" & "," & "'" + areaR + "'" & "," & "'" + branchR + "'" & "," & "'" + reportR + "'"
+
+            If dbr.isConnected Then
+                dbr.CloseConnection()
+            End If
+
+            IniReport()
+            strConR = Me.Session("strConfReport")
+            dbr.ConnectDB(strConR)
+            rdr = dbr.Execute_SQL_DataReader(sql)
+
+            If rdr.Read Then
+                Me.Session.Add("gen_date", gen_date)
+                Me.Session.Add("reportR", reportR)
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Response.Redirect("CashFlowReport.aspx")
+            Else
+                Response.Write("<script language=javascript>")
+                Response.Write("alert('" & "No data to view." & "')")
+                Response.Write("</script>")
+                Response.Write("<script language=javascript>")
+                Response.Write("window.location = 'MainMenu.aspx'")
+                Response.Write("</script>")
+            End If
+
+            rdr.Close()
+            dbr.CloseConnection()
+
+        ElseIf dplWide.Text = "LUZON" Then
+            reportR = "CF_Area_Luzon"
+
+            sql = "exec SP_CashFlowVer3Report" & " " & "'" + t2_date + "'" & "," & "'" + wideR + "'" & "," & "'" + regionR + "'" & "," & "'" + areaR + "'" & "," & "'" + branchR + "'" & "," & "'" + reportR + "'"
+
+            If dbr.isConnected Then
+                dbr.CloseConnection()
+            End If
+
+            IniReport()
+            strConR = Me.Session("strConfReport")
+            dbr.ConnectDB(strConR)
+            rdr = dbr.Execute_SQL_DataReader(sql)
+
+            If rdr.Read Then
+                Me.Session.Add("gen_date", gen_date)
+                Me.Session.Add("reportR", reportR)
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Response.Redirect("CashFlowReport.aspx")
+            Else
+                Response.Write("<script language=javascript>")
+                Response.Write("alert('" & "No data to view." & "')")
+                Response.Write("</script>")
+                Response.Write("<script language=javascript>")
+                Response.Write("window.location = 'MainMenu.aspx'")
+                Response.Write("</script>")
+            End If
+
+            rdr.Close()
+            dbr.CloseConnection()
+
+        End If
+    End Sub
+
+    Public Sub genbranch()
+        Dim strConR As String = Nothing
+        Dim rdr As SqlClient.SqlDataReader = Nothing
+        Dim dbr As New clsDBConnection
+        Dim sql As String = Nothing
+        Dim t_date As String = Convert.ToString(gen_date)
+        Dim t2_date As String = t_date.Substring(0, t_date.Length - 12)
+        Dim wBranch As String = Me.Session("branchR")
+
+        If dplWide.Text = "VISMIN" Then
+            reportR = "CF_pb_Vismin"
+
+            sql = "exec SP_CashFlowVer3Report" & " " & "'" + t2_date + "'" & "," & "'" + wideR + "'" & "," & "'" + regionR + "'" & "," & "'" + areaR + "'" & "," & "'" + branchR + "'" & "," & "'" + reportR + "'"
+
+            If dbr.isConnected Then
+                dbr.CloseConnection()
+            End If
+
+            IniReport()
+            strConR = Me.Session("strConfReport")
+            dbr.ConnectDB(strConR)
+            rdr = dbr.Execute_SQL_DataReader(sql)
+
+            If rdr.Read Then
+                Me.Session.Add("gen_date", gen_date)
+                Me.Session.Add("reportR", reportR)
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Response.Redirect("CashFlowReport.aspx")
+            Else
+                Response.Write("<script language=javascript>")
+                Response.Write("alert('" & "No data to view." & "')")
+                Response.Write("</script>")
+                Response.Write("<script language=javascript>")
+                Response.Write("window.location = 'MainMenu.aspx'")
+                Response.Write("</script>")
+            End If
+
+            rdr.Close()
+            dbr.CloseConnection()
+
+        ElseIf dplWide.Text = "LUZON" Then
+            reportR = "CF_pb_Luzon"
+
+            sql = "exec SP_CashFlowVer3Report" & " " & "'" + t2_date + "'" & "," & "'" + wideR + "'" & "," & "'" + regionR + "'" & "," & "'" + areaR + "'" & "," & "'" + branchR + "'" & "," & "'" + reportR + "'"
+
+            If dbr.isConnected Then
+                dbr.CloseConnection()
+            End If
+
+            IniReport()
+            strConR = Me.Session("strConfReport")
+            dbr.ConnectDB(strConR)
+            rdr = dbr.Execute_SQL_DataReader(sql)
+
+            If rdr.Read Then
+                Me.Session.Add("gen_date", gen_date)
+                Me.Session.Add("reportR", reportR)
+                Me.Session.Add("wideR", wideR)
+                Me.Session.Add("regionR", regionR)
+                Me.Session.Add("areaR", areaR)
+                Me.Session.Add("branchR", branchR)
+                Response.Redirect("CashFlowReport.aspx")
+            Else
+                Response.Write("<script language=javascript>")
+                Response.Write("alert('" & "No data to view." & "')")
+                Response.Write("</script>")
+                Response.Write("<script language=javascript>")
+                Response.Write("window.location = 'MainMenu.aspx'")
+                Response.Write("</script>")
+            End If
+
+            rdr.Close()
+            dbr.CloseConnection()
+        End If
+    End Sub
+
+    Private Sub CheckLogin()
+        If Me.Session("uname") = "" Then
+            Response.Redirect("Login.aspx")
+        End If
+    End Sub
+End Class
