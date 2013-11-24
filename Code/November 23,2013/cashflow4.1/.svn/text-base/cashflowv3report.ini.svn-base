@@ -1,0 +1,5 @@
+[SERVER INI]
+SERVER=SynergyWin2003
+DBNAME=cashflow
+USERNAME=sa
+PASSWORD=ml

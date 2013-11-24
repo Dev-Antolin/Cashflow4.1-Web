@@ -1,0 +1,21 @@
+[SERVER VisMin INI]
+SERVER=SynergyWin2003
+DBNAME=synergyvismin
+USERNAME=sa
+PASSWORD=ml
+  
+[SERVER Luzon INI]
+SERVER=192.168.12.252
+DBNAME=synergyluzon
+USERNAME=sa
+PASSWORD=ml
+
+[SERVER Synergy]
+SERVER=192.168.12.252
+DBNAME=synergyvismin
+USERNAME=sa
+PASSWORD=ml
+user1 = ADMNISTRATOR
+user2 = ADMINSTAFF  
+user3 = DIV MAN    
+

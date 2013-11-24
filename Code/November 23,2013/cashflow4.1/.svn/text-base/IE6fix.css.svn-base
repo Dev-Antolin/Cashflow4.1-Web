@@ -1,0 +1,39 @@
+/*===========BODY OF WEB===============*/
+
+html, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, acronym, address, big, cite, code,
+del, dfn, em, font, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul,
+fieldset, form, label, legend,
+caption, tbody, tfoot, thead, tr, th, td, br 
+
+.gainlayout
+{
+    HEIGHT:18px;
+}
+#container
+{
+    POSITION:static 
+}
+
+/*==========================MENU OF TABLIST=======================*/
+
+#content2 {
+	margin: 0;
+    padding: 0;
+	position:absolute;
+	display:inline;
+	width :82%;
+	/*width:1170px;*/
+	margin-top:8px;
+	margin-left:2px;
+	height:413px;
+	border: 1px solid gray;
+	top: 89px;
+	left: 171px;
+}
+
+/*==========================Log out=======================*/

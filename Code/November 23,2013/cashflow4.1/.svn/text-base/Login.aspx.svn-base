@@ -1,0 +1,150 @@
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="Login.aspx.vb" Inherits="Login" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<link rel="shortcut icon" href="Images/application.ico"/>
+    <link rel="stylesheet" type="text/css" href="sinorca-screen.css" media="screen" title="Sinorca (screen)" />
+    <link rel="stylesheet alternative" type="text/css" href="sinorca-screen-alt.css" media="screen" title="Sinorca (alternative)" />
+    <link rel="stylesheet" type="text/css" href="sinorca-print.css" media="print" />
+
+    <script type = "text/javascript" >
+    function disableBackButton()
+        {
+        window.history.forward();
+        }
+        setTimeout("disableBackButton()", -1500);
+    </script>
+    <title>GMO Web Login</title>
+    <style type="text/css">
+        .style1
+        {
+            width: 100%;
+        }
+        .style2
+        {
+            height: 6px;
+        }
+        .style3
+        {
+        }
+        .style4
+        {
+            height: 6px;
+            width: 114px;
+        }
+    </style>
+</head>
+<body onload ="disableBackButton()">
+    <form id="form1" runat="server">
+    <div class="superHeader">
+<%--          <div class="rightbelow" 
+              style="text-align: left; height: 13px; width: 142px; color: #0000FF;">
+          &nbsp;<b>GMO Web Version 1.5</b>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          </div>--%>
+     </div>
+    <div id="header">
+        <div class="midHeader">
+            <h1>
+                <img alt="M. Lhuillier" src="Images/ReviseML.jpg" />
+            </h1>
+        </div> 
+      <div class="subHeader">
+            <span class="doNotDisplay">Navigation:</span>
+            Cash Flow Version 3.0
+            <!-- ##### Display Link ##### -->
+      </div>
+
+    </div>
+    <div id="Log_menu" align ="Center">
+        <br />
+        <br />
+        <br />
+        <br />
+    <br />
+    <fieldset style="top: 133px; left: 535px; height: 153px; width: 311px">
+        <table class="style1">
+            <tr>
+                <td class="style3" style="text-align: center" colspan="2">
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="style3" style="text-align: right">
+                    &nbsp;</td>
+                <td style="text-align: left">
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td class="style3" style="text-align: right">
+        <asp:Label ID="Label3" runat="server" Text="Username :" 
+                    style="font-weight: 700; font-family: Arial, Helvetica, sans-serif; font-size: small;"></asp:Label>
+                </td>
+                <td style="text-align: left">
+                    <asp:TextBox ID="txtUsername" runat="server" MaxLength="13" 
+                        style="text-transform:uppercase;" Width="128px"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="style4" style="text-align: right">
+                </td>
+                <td class="style2" style="text-align: left">
+                </td>
+            </tr>
+            <tr>
+                <td class="style3" style="text-align: right">
+                <asp:Label ID="Label4" runat="server" Text="Password :" 
+                    style="font-weight: 700; font-family: Arial, Helvetica, sans-serif; font-size: small;"></asp:Label>
+                </td>
+                <td style="text-align: left">
+                    <asp:TextBox ID="txtPassword" runat="server" MaxLength="9" TextMode="Password" Width="128px" 
+                        ></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="style3" style="text-align: center" colspan="2">
+                    <asp:Label ID="lblMsg" runat="server" 
+                        style="font-style: italic; color: #FF0000"></asp:Label>
+                </td>
+            </tr>
+            <tr>
+                <td class="style3" style="text-align: center" colspan="2">
+                 <asp:Button ID="btnLogin" runat="server" 
+                    style="top: 108px; left: 162px; height: 26px; width: 73px" 
+                    Text="Ok" />   
+                </td>
+            </tr>
+        </table>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                
+    </fieldset>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+        <div id="footer">
+      <div class="left">
+          M. Lhuillier Philippines Inc.<a href="" class="doNotPrint"></a>
+      </div>
+
+      <br class="doNotDisplay doNotPrint" />
+
+      <div class="right">
+        All Rights Reserved. Copyright © 2010
+        <br />
+        <a href="" class="doNotPrint"></a>
+      </div>
+    </div>
+    </form>
+</body>
+</html>
