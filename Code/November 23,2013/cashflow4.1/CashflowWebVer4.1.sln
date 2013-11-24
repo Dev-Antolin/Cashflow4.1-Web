@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "cashflow4.1", ".", "{01FF0C11-CDDA-44AD-8357-D7FDA83E8BDE}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFramework = "3.5"
+		Debug.AspNetCompiler.VirtualPath = "/VisMinCashflowVer3"
+		Debug.AspNetCompiler.PhysicalPath = "E:\Back up\Silvher's Vb.net 08\VisMinCashflowVer3\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\VisMinCashflowVer3\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/VisMinCashflowVer3"
+		Release.AspNetCompiler.PhysicalPath = "E:\Back up\Silvher's Vb.net 08\VisMinCashflowVer3\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\VisMinCashflowVer3\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "59108"
+		DefaultWebSiteLanguage = "Visual Basic"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01FF0C11-CDDA-44AD-8357-D7FDA83E8BDE}.Debug|.NET.ActiveCfg = Debug|.NET
+		{01FF0C11-CDDA-44AD-8357-D7FDA83E8BDE}.Debug|.NET.Build.0 = Debug|.NET
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

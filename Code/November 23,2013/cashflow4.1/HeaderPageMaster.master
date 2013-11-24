@@ -1,0 +1,196 @@
+﻿<%@ Master Language="VB" AutoEventWireup="False" CodeFile="HeaderPageMaster.master.vb" Inherits="HeaderPageMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <!--[if IE 6]>
+    <link href="IE6fix.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+    img, div, a, input { behavior: url(iepngfix.htc) }
+    </style>
+    <script type="text/javascript" src="iepngfix_tilebg.js"></script>
+    <![endif]-->
+   
+   <script type="text/javascript">
+    <!--//
+    window.history.forward(1);
+    //-->
+    </script>
+   
+    <script type="text/javascript">
+    function startTime()
+    {
+    var x = String;
+    var today=new Date();
+    var h=today.getHours();
+    var m=today.getMinutes();
+    var s=today.getSeconds();
+    // add a zero in front of numbers<10
+    m=checkTime(m);
+    s=checkTime(s);
+    if (h > 12)
+    h = h -12;
+    x=h+":"+m+":"+s;    
+    t=setTimeout('startTime()',500);
+    }
+    function checkTime(i)
+    {
+    if (i<10)
+      {
+      i="0" + i;
+      }
+    return i;
+    }
+    </script>
+    <script type ="text/javascript">
+    function numerals(evt) 
+    {
+        evt = (evt) ? evt : event;
+        var charCode = (evt.charCode) ? evt.charCode : ((evt.keyCode) ? evt.keyCode : ((evt.which) ? evt.which : 0));
+        if (charCode > 31 && (charCode < 47 || charCode > 57))
+        {
+            return false;
+        }
+        return true;
+    }
+    </script>
+    <script type ="text/javascript">
+    function Chars(evt) 
+    {
+        evt = (evt) ? evt : event;
+        var charCode = (evt.charCode) ? evt.charCode : ((evt.keyCode) ? evt.keyCode : ((evt.which) ? evt.which : 0));
+        if (charCode > 31 && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) && (charCode < 47 || charCode > 57) && (charCode != 32))
+        {
+            return false;
+        }
+        return true;
+    }
+    </script>
+    <script type = "text/javascript">
+    <!--
+    function Check_Click(objRef)
+    {
+        var row = objRef.parentNode.parentNode;
+        var GridView = row.parentNode;
+        var inputList = GridView.getElementsByTagName("input");
+        for (var i=0;i<inputList.length;i++)
+        {
+            var headerCheckBox = inputList[0];
+            var checked = true;
+            if(inputList[i].type == "checkbox" && inputList[i] != headerCheckBox)
+            {
+                if(!inputList[i].checked)
+                {
+                    checked = false;
+                    break;
+                }
+            }
+        }
+        headerCheckBox.checked = checked;
+    }
+    function checkAll(objRef)
+    {
+        var GridView = objRef.parentNode.parentNode.parentNode;
+        var inputList = GridView.getElementsByTagName("input");
+        for (var i=0;i<inputList.length;i++)
+        {
+            var row = inputList[i].parentNode.parentNode;
+            if(inputList[i].type == "checkbox"  && objRef != inputList[i])
+            {
+                if (objRef.checked)
+                {
+                    inputList[i].checked=true;
+                }
+                else
+                {
+                    if(row.rowIndex % 2 == 0)
+                    {
+                       row.style.backgroundColor = "white";
+                    }
+                    else
+                    {
+                       row.style.backgroundColor = "white";
+                    }
+                    inputList[i].checked=false;
+                }
+            }
+        }
+    }
+    //-->
+    </script>
+    <script type = "text/javascript" >
+    function disableBackButton()
+        {
+        window.history.forward();
+        }
+        setTimeout("disableBackButton()", -1500);
+    </script>
+    
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <meta name="author" content="haran" />
+    <meta name="generator" content="author" />
+    <!-- Navigational metadata for large websites (an accessibility feature): -->
+    <link rel="top"      href="" title="Homepage" />
+    <link rel="up"       href="" title="Up" />
+    <link rel="first"    href="" title="First page" />
+    <link rel="previous" href="" title="Previous page" />
+    <link rel="next"     href="" title="Next page" />
+    <link rel="last"     href="" title="Last page" />
+    <link rel="toc"      href="" title="Table of contents" />
+    <link rel="index"    href="" title="Site map" />
+
+    <link rel="stylesheet" type="text/css" href="sinorca-screen.css" media="screen" title="Sinorca (screen)" />
+    <link rel="stylesheet alternative" type="text/css" href="sinorca-screen-alt.css" media="screen" title="Sinorca (alternative)" />
+    <link rel="stylesheet" type="text/css" href="sinorca-print.css" media="print" />
+
+    <title>CashFlow v4.1</title>
+</head>
+<body onload="disableBackButton(); startTime()">
+    <form id="form1" runat="server">
+        <!-- For non-visual user agents: -->
+      <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main 
+          content.</a></div>
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+      <div class="superHeader">
+          <div class="right">
+          <%--&nbsp;<b>WelcWelcome!</b><asp:Image ID="Image2" runat="server" Height="16px" 
+                  ImageAlign="Middle" ImageUrl="~/Images/Client.png" 
+                  Width="16px" style="top: -2px; left: 71px; position: absolute" />
+              &nbsp;&nbsp;&nbsp;&nbsp;--%>
+          <asp:Label ID="lblName" runat="server" 
+                  style="font-weight: 700;"></asp:Label> |
+              <b>
+          <%--<a href = "Login.aspx">Log-out</a></b>--%>
+          <asp:LinkButton ID="btnLogOut" runat="server">Log-Out</asp:LinkButton>
+          </div>
+      </div>
+      <div class="midHeader">
+        <h1 class="headerTitle">
+            <asp:Image ID="Image1" runat="server" ImageUrl="~/Images/ReviseML.jpg" />
+          </h1>
+      </div>
+    </div>
+    <div>
+        <asp:ContentPlaceHolder id="MenuContentPlaceHolder" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    <div id="footer">
+      <div class="left">
+         M. Lhuillier Philippines Inc. All Rights Reserved. 
+      </div>
+
+      <br class="doNotDisplay doNotPrint" />
+
+      <div class="right">
+        Copyright © 2010<br />
+        <a href="" class="doNotPrint"></a>
+      </div>
+    </div>
+    </form>
+</body>
+</html>
